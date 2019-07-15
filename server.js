@@ -32,13 +32,13 @@ app.set("view engine", "handlebars");
 
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/newsucanuse", { useNewUrlParser: true });
 
 // Routes
 
-// A GET route for scraping the website
+//GET route for scraping the website
 app.get("/scrape", function(req, res) {
-  // First, we grab the html with axios
+  //Grab html with axios
   axios.get("").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
