@@ -48,43 +48,33 @@ app.get("/scrape", function (req, res) {
     axios.get("https://www.reddit.com/r/news/").then(function (response) {
         // Load to cheerio
         var $ = cheerio.load(response.data);
-        var results = [];
 
         // Scrape HTML
         $("article h3").each(function (i, element) {
             // Save an empty result object
-            //   var result = {};
-            
+            var result = {};
+
 
             // Add text and href of every link, save as properties of the result object
-            //   result.title = $(this)
-            //     .children("a")
-            //     .text();
-            //   result.link = $(this)
-            //     .children("a")
-            //     .attr("href");
+            result.title = $(this)
+                .text();
+            result.link = $(this)
+                .parent()
+                .parent()
+                .attr("href");
 
-            //   // Create a new Article
-            //   db.Article.create(result)
-            //     .then(function(dbArticle) {
-            //       console.log(dbArticle);
-            //     })
-            //     .catch(function(err) {
-            //       console.log(err);
-            //     });
+            // Create a new Article
+            db.Article.create(result)
+                .then(function (dbArticle) {
+                    console.log(dbArticle);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
 
-
-            var title = $(element).text();
-            var link = $(element).parent().parent().attr("href");
-
-
-            results.push({
-                title: title,
-                link: link
-            });
-            
+            // console.log(result);
         });
-        console.log(results);
+
 
         // Send confirmation message to the client
         res.send("Scrape Complete");
