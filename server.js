@@ -25,7 +25,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 // Serve static content for the app from the "public" directory
-app.use(express.static(__dirname + "public"));
+app.use(express.static(__dirname + "/public"));
 
 var exphbs = require("express-handlebars");
 
@@ -41,6 +41,11 @@ mongoose.connect("mongodb://localhost/mongoHeadlines", {
 });
 
 // Routes
+
+//Routing traffic to the home page
+app.get("/", (request, response) => {
+    response.render("index");
+});
 
 //GET route for scraping the website
 app.get("/scrape", function (req, res) {
@@ -71,10 +76,7 @@ app.get("/scrape", function (req, res) {
                 .catch(function (err) {
                     console.log(err);
                 });
-
-            // console.log(result);
         });
-
 
         // Send confirmation message to the client
         res.send("Scrape Complete");
