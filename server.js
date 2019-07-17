@@ -48,7 +48,7 @@ app.get("/", (request, response) => {
 });
 
 //GET route for scraping the website
-app.get("/scrape", function (req, res) {
+app.get("/scrape", function (request, response) {
     //Grab html with axios
     axios.get("https://www.reddit.com/r/news/").then(function (response) {
         // Load to cheerio
@@ -79,51 +79,52 @@ app.get("/scrape", function (req, res) {
         });
 
         // Send confirmation message to the client
-        res.send("Scrape Complete");
+        response.send("Scrape Complete");
     });
 });
 
 // Route for getting all Articles from the db
-app.get("/articles", function (req, res) {
+app.get("/api/articles", function (request, response) {
     // Grab every document in the Articles collection
-    db.Article.find({})
-        .then(function (dbArticle) {
-            // If able to successfully update Article, send back to client
-            res.json(dbArticle);
-        })
-        .catch(function (err) {
-            // If error occurred, send to client
-            res.json(err);
-        });
+    console.log(request);
+    // db.Article.find({})
+    //     .then(function (dbArticle) {
+    //         // If able to successfully update Article, send back to client
+    //         response.json(dbArticle);
+    //     })
+    //     .catch(function (err) {
+    //         // If error occurred, send to client
+    //         response.json(err);
+    //     });
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function (req, res) {
+app.get("/articles/:id", function (request, response) {
     //Match parameter id with the id in database
     db.Article.findOne({
-            _id: req.params.id
+            _id: request.params.id
         })
         //Populate all associated with it
         .populate("note")
         .then(function (dbArticle) {
             // If able to successfully update Article, send back to client
-            res.json(dbArticle);
+            response.json(dbArticle);
         })
         .catch(function (err) {
             // If error occurred, send to client
-            res.json(err);
+            response.json(err);
         });
 });
 
 // Route for saving/updating note
-app.post("/articles/:id", function (req, res) {
-    // Create a new note and pass the req.body to the entry
-    db.Note.create(req.body)
+app.post("/articles/:id", function (request, response) {
+    // Create a new note and pass the request.body to the entry
+    db.Note.create(request.body)
         .then(function (dbNote) {
-            // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+            // If a Note was created successfully, find one Article with an `_id` equal to `request.params.id`. Update the Article to be associated with the new Note
             // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
             return db.Article.findOneAndUpdate({
-                _id: req.params.id
+                _id: request.params.id
             }, {
                 note: dbNote._id
             }, {
@@ -132,11 +133,11 @@ app.post("/articles/:id", function (req, res) {
         })
         .then(function (dbArticle) {
             // If able to successfully update Article, send back to client
-            res.json(dbArticle);
+            response.json(dbArticle);
         })
         .catch(function (err) {
             // If error occurrs, send to the client
-            res.json(err);
+            response.json(err);
         });
 });
 

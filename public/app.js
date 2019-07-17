@@ -1,3 +1,6 @@
 $(document).ready(function(){
-console.log("js is linked");
+    console.log("hitttt");
+    $.get("/api/articles", function(data){
+
+    })
 })
