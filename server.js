@@ -86,16 +86,16 @@ app.get("/scrape", function (request, response) {
 // Route for getting all Articles from the db
 app.get("/api/articles", function (request, response) {
     // Grab every document in the Articles collection
-    console.log(request);
-    // db.Article.find({})
-    //     .then(function (dbArticle) {
-    //         // If able to successfully update Article, send back to client
-    //         response.json(dbArticle);
-    //     })
-    //     .catch(function (err) {
-    //         // If error occurred, send to client
-    //         response.json(err);
-    //     });
+    db.Article.find({})
+        .then(function (dbArticle) {
+            // If able to successfully update Article, send back to client
+            // response.json(dbArticle);
+            console.log(dbArticle);
+        })
+        .catch(function (err) {
+            // If error occurred, send to client
+            response.json(err);
+        });
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
