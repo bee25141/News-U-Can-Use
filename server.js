@@ -90,7 +90,12 @@ app.get("/api/articles", function (request, response) {
         .then(function (dbArticle) {
             // If able to successfully update Article, send back to client
             // response.json(dbArticle);
-            console.log(dbArticle);
+                // var articleObject = {
+                //     article: dbArticle
+                // }
+
+            response.render("index", dbArticle);
+            console.log(typeof dbArticle);
         })
         .catch(function (err) {
             // If error occurred, send to client
