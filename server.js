@@ -87,15 +87,9 @@ app.get("/scrape", function (request, response) {
 app.get("/api/articles", function (request, response) {
     // Grab every document in the Articles collection
     db.Article.find({})
-        .then(function (dbArticle) {
+        .then(function (data) {
             // If able to successfully update Article, send back to client
-            // response.json(dbArticle);
-                // var articleObject = {
-                //     article: dbArticle
-                // }
-
-            response.render("index", dbArticle);
-            console.log(typeof dbArticle);
+            response.json(data);
         })
         .catch(function (err) {
             // If error occurred, send to client
