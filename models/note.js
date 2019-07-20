@@ -1,10 +1,10 @@
-var mongoose = require("mongoose");
+let mongoose = require("mongoose");
 
 // Reference to Schema constructor
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
 // Creating new NoteSchema object
-var NoteSchema = new Schema({
+let NoteSchema = new Schema({
 
   title: String,
 
@@ -12,7 +12,7 @@ var NoteSchema = new Schema({
 });
 
 // Creating new model from schema
-var Note = mongoose.model("Note", NoteSchema);
+let Note = mongoose.model("Note", NoteSchema);
 
 // Export the Note model
 module.exports = Note;

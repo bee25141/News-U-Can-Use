@@ -1,18 +1,18 @@
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+let express = require("express");
+let logger = require("morgan");
+let mongoose = require("mongoose");
 
 // Scraping tools
-var axios = require("axios");
-var cheerio = require("cheerio");
+let axios = require("axios");
+let cheerio = require("cheerio");
 
 // Require models
-var db = require("./models");
+let db = require("./models");
 
-var PORT = 8000;
+let PORT = 8000;
 
 // Initialize Express
-var app = express();
+let app = express();
 
 // Configure middleware
 
@@ -27,7 +27,7 @@ app.use(express.json());
 // Serve static content for the app from the "public" directory
 app.use(express.static(__dirname + "/public"));
 
-var exphbs = require("express-handlebars");
+let exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
     defaultLayout: "main"
@@ -52,15 +52,14 @@ app.get("/scrape", function (request, response) {
     //Grab html with axios
     axios.get("https://www.reddit.com/r/news/").then(function (response) {
         // Load to cheerio
-        var $ = cheerio.load(response.data);
+        let $ = cheerio.load(response.data);
 
         // Scrape HTML
         $("article h3").each(function (i, element) {
             // Save an empty result object
-            var result = {};
+            let result = {};
 
-
-            // Add text and href of every link, save as properties of the result object
+            // Adding text and href of every link, save as properties of the result object
             result.title = $(this)
                 .text();
             result.link = $(this)
@@ -78,26 +77,23 @@ app.get("/scrape", function (request, response) {
                 });
         });
 
-        // Send confirmation message to the client
         response.send("Scrape Complete");
     });
 });
 
 // Route for getting all Articles from the db
 app.get("/api/articles", function (request, response) {
-    // Grab every document in the Articles collection
+
     db.Article.find({})
         .then(function (data) {
-            // If able to successfully update Article, send back to client
             response.json(data);
         })
         .catch(function (err) {
-            // If error occurred, send to client
             response.json(err);
         });
 });
 
-// Route for grabbing a specific Article by id, populate it with it's note
+// Route for grabbing a specific Article by id and populating with note
 app.get("/articles/:id", function (request, response) {
     //Match parameter id with the id in database
     db.Article.findOne({
@@ -106,22 +102,19 @@ app.get("/articles/:id", function (request, response) {
         //Populate all associated with it
         .populate("note")
         .then(function (dbArticle) {
-            // If able to successfully update Article, send back to client
             response.json(dbArticle);
         })
         .catch(function (err) {
-            // If error occurred, send to client
             response.json(err);
         });
 });
 
 // Route for saving/updating note
 app.post("/articles/:id", function (request, response) {
-    // Create a new note and pass the request.body to the entry
+
     db.Note.create(request.body)
         .then(function (dbNote) {
-            // If a Note was created successfully, find one Article with an `_id` equal to `request.params.id`. Update the Article to be associated with the new Note
-            // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+
             return db.Article.findOneAndUpdate({
                 _id: request.params.id
             }, {
@@ -131,11 +124,9 @@ app.post("/articles/:id", function (request, response) {
             });
         })
         .then(function (dbArticle) {
-            // If able to successfully update Article, send back to client
             response.json(dbArticle);
         })
         .catch(function (err) {
-            // If error occurrs, send to the client
             response.json(err);
         });
 });
