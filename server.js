@@ -49,9 +49,9 @@ app.get("/", (request, response) => {
 });
 
 //GET route for scraping the website
-app.get("/scrape", function (request, response) {
+app.get("/scrape", function (req, res) {
     //Grab html with axios
-    axios.get("https://www.reddit.com/r/news/").then(function (request, response) {
+    axios.get("https://www.reddit.com/r/news/").then(function (response) {
         // Load to cheerio
         let $ = cheerio.load(response.data);
 
@@ -76,9 +76,10 @@ app.get("/scrape", function (request, response) {
                 .catch(function (err) {
                     console.log(err);
                 });
+
         });
 
-        response.send("Scrape Complete");
+        res.send("Scrape Complete");
     });
 });
 
