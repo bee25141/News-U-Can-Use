@@ -51,7 +51,7 @@ app.get("/", (request, response) => {
 //GET route for scraping the website
 app.get("/scrape", function (request, response) {
     //Grab html with axios
-    axios.get("https://www.reddit.com/r/news/").then(function (response) {
+    axios.get("https://www.reddit.com/r/news/").then(function (request, response) {
         // Load to cheerio
         let $ = cheerio.load(response.data);
 
@@ -133,6 +133,6 @@ app.post("/articles/:id", function (request, response) {
 });
 
 // Starting the server
-app.listen(PORT, function () {
+app.listen(process.env.PORT || PORT, function () {
     console.log("App running on port " + PORT);
 });
