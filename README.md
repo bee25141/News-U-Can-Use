@@ -11,6 +11,7 @@ Bootstrap - The CSS framework used. <br/>
 MongoDB & Mongoose. <br/>
 Axios for API calls. <br/>
 Cheerio.js for scraping and storing the news site headlines. <br/>
+Node.js & Express.js <br/>
 JavaScript & jQuery. <br/>
 HTML.
 
