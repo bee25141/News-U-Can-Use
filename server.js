@@ -9,7 +9,7 @@ let cheerio = require("cheerio");
 // Require models
 let db = require("./models");
 
-let PORT = 8000;
+let PORT = process.env.PORT || 8000;
 
 // Initialize Express
 let app = express();
@@ -79,7 +79,7 @@ app.get("/scrape", function (req, res) {
 
         });
 
-        res.send("Scrape Complete");
+        res.send("Scrape Complete! Go back to home page to see results");
     });
 });
 
@@ -134,6 +134,6 @@ app.post("/articles/:id", function (request, response) {
 });
 
 // Starting the server
-app.listen(process.env.PORT || PORT, function () {
+app.listen( PORT, function () {
     console.log("App running on port " + PORT);
 });
